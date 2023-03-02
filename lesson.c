@@ -11,7 +11,7 @@ typedef struct {
 
 typedef struct {
 	Exercise exercises[20];
-	size_t size;
+	int size;
 } Lesson;
 
 Lesson lesson_new(void) {
@@ -22,25 +22,39 @@ Lesson lesson_new(void) {
 	return lesson;
 }
 
-void lesson_add_exercise(Lesson *lesson, ExerciseFn fn, char title[256]) {
+void lesson_add_exercise(Lesson *lesson, ExerciseFn fn) {
 	Exercise exercise = {
 		.fn = fn,
 		.number = lesson->size + 1,
 	};
 
-	strncpy(exercise.title, title, 256);
+	lesson->exercises[lesson->size] = exercise;
+	lesson->size++;
+}
+
+void lesson_add_exercise_with_title(Lesson *lesson, ExerciseFn fn, char title[256 - 32]) {
+	Exercise exercise = {
+		.fn = fn,
+		.number = lesson->size + 1,
+	};
+
+	char title_mod[256] = ": ";
+	strncat(title_mod, title, 256);
+
+	strncpy(exercise.title, title_mod, 256);
 
 	lesson->exercises[lesson->size] = exercise;
 	lesson->size++;
 }
 
 void lesson_display(Lesson lesson) {
-	for (size_t i = 0; i < lesson.size; i++) {
+	for (int i = 0; i < lesson.size; i++) {
 		const Exercise exercise = lesson.exercises[i];
 
-		printf("[%u]: ", exercise.number);
-		fputs(exercise.title, stdout);
-		printf("\n");
+		char out[256 + 32] = "[%u]";
+		strncat(out, exercise.title, 256 + 32);
+		strncat(out, "\n", 256 + 32);
+		printf(out, exercise.number);
 	}
 
 	printf("\n");
@@ -54,7 +68,7 @@ void lesson_select_exercise(Lesson lesson) {
 
 	printf("\n");
 
-	for (size_t i = 0; i < lesson.size; i++) {
+	for (int i = 0; i < lesson.size; i++) {
 		const Exercise exercise = lesson.exercises[i];
 
 		if (selected_num == exercise.number) {
