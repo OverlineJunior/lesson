@@ -10,4 +10,4 @@ At the time I'm writing this, I don't know of any package manager for C, so the 
 
 # Version
 
-SemVer 2.0.2
+SemVer 2.0.3
