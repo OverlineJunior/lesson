@@ -1,12 +1,14 @@
 #include <stdio.h>
 #include <string.h>
 
+#define TITLE_SIZE 256
+
 typedef void (*ExerciseFn)(void);
 
 typedef struct {
 	ExerciseFn fn;
 	unsigned int number;
-	char title[256];
+	char title[TITLE_SIZE];
 } Exercise;
 
 typedef struct {
@@ -32,16 +34,16 @@ void lesson_add_exercise(Lesson *lesson, ExerciseFn fn) {
 	lesson->size++;
 }
 
-void lesson_add_exercise_with_title(Lesson *lesson, ExerciseFn fn, char title[256 - 32]) {
+void lesson_add_exercise_with_title(Lesson *lesson, ExerciseFn fn, char title[TITLE_SIZE - 32]) {
 	Exercise exercise = {
 		.fn = fn,
 		.number = lesson->size + 1,
 	};
 
-	char title_mod[256] = ": ";
-	strncat(title_mod, title, 256);
+	char title_mod[TITLE_SIZE] = ": ";
+	strncat(title_mod, title, TITLE_SIZE);
 
-	strncpy(exercise.title, title_mod, 256);
+	strncpy(exercise.title, title_mod, TITLE_SIZE);
 
 	lesson->exercises[lesson->size] = exercise;
 	lesson->size++;
@@ -51,9 +53,9 @@ void lesson_display(Lesson lesson) {
 	for (int i = 0; i < lesson.size; i++) {
 		const Exercise exercise = lesson.exercises[i];
 
-		char out[256 + 32] = "[%u]";
-		strncat(out, exercise.title, 256 + 32);
-		strncat(out, "\n", 256 + 32);
+		char out[TITLE_SIZE + 32] = "[%u]";
+		strncat(out, exercise.title, TITLE_SIZE + 32);
+		strncat(out, "\n", TITLE_SIZE + 32);
 		printf(out, exercise.number);
 	}
 
