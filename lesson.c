@@ -28,7 +28,7 @@ void lesson_add_exercise(Lesson *lesson, ExerciseFn fn, char title[256]) {
 		.number = lesson->size + 1,
 	};
 
-	strcpy_s(exercise.title, 256, title);
+	strncpy(exercise.title, title, 256);
 
 	lesson->exercises[lesson->size] = exercise;
 	lesson->size++;
@@ -50,7 +50,7 @@ void lesson_select_exercise(Lesson lesson) {
 	printf("Escolha um numero de exercicio: ");
 
 	int selected_num;
-	scanf_s("%i", &selected_num);
+	scanf("%i", &selected_num);
 
 	printf("\n");
 
